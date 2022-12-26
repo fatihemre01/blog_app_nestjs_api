@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  nestjs:
+    build: ./
+    container_name: nestjs_api
+    environment:
+      - PORT=3000
+      - JWT_SECRET=123
+      - MONGO_URI=mongodb://mongo_db:27017/BlogApp
+    ports:
+      - '3000:3000'
+    depends_on:
+      - mongodb
+    networks:
+      - nestjs_network
+
+  mongodb:
+    image: mongo
+    container_name: mongo_db
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./mongo-volumes:/data/db
+    networks:
+      - nestjs_network
+
+networks:
+  nestjs_network:
